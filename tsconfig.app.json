@@ -18,9 +18,9 @@
     /* Linting */
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "ignoreDeprecations": "6.0",
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
-    ,
+    "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

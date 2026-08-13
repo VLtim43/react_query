@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { AgencyHomePage } from "@/components/agency-home-page";
+
 type Agency = {
   id: string;
   slug: string;
@@ -51,10 +53,7 @@ function App() {
   }
 
   return (
-    <main>
-      <p>Agency portal</p>
-      <h1>{agency?.name}</h1>
-    </main>
+    <>{agency ? <AgencyHomePage agency={agency} /> : null}</>
   );
 }
 
