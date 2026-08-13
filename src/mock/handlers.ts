@@ -1,25 +1,16 @@
 import { http, HttpResponse } from "msw";
-
-const books = [{}];
+import { agencies } from "../data/agencies";
 
 export const handlers = [
-  // GET
-  http.get("/api/books", () => {
-    return HttpResponse.json(books);
-  }),
+  http.get("/api/agencies/:agencySlug", ({ params }) => {
+    const agency = agencies.find(
+      (agency) => agency.slug === params.agencySlug,
+    );
 
-  // POST
-  http.post("/api/books", async ({ request }) => {
-    const body = (await request.json()) as { title: string; author: string };
+    if (!agency) {
+      return HttpResponse.json({ message: "Agency not found" }, { status: 404 });
+    }
 
-    const book = {
-      id: crypto.randomUUID(),
-      title: body.title,
-      author: body.author,
-    };
-
-    books.push(book);
-
-    return HttpResponse.json(book, { status: 201 });
+    return HttpResponse.json(agency);
   }),
 ];
