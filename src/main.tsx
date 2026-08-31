@@ -1,4 +1,5 @@
 import App from './App.tsx'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -19,6 +20,7 @@ worker.start().then(() => {
     <QueryClientProvider client={queryClient}>
       <StrictMode>
         <App />
+        <ReactQueryDevtools initialIsOpen={false} />
       </StrictMode>
     </QueryClientProvider>
   )

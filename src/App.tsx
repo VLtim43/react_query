@@ -1,60 +1,50 @@
-import { useEffect, useState } from "react";
-
-import { AgencyHomePage } from "@/components/agency-home-page";
+import { AgencyHomePage } from '@/components/agency-home-page'
+import { useQuery } from '@tanstack/react-query'
 
 type Agency = {
-  id: string;
-  slug: string;
-  name: string;
-};
-
-function App() {
-  const agencySlug = window.location.pathname.split("/").filter(Boolean)[0];
-  const [agency, setAgency] = useState<Agency | null>(null);
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
-    agencySlug ? "loading" : "idle",
-  );
-
-  useEffect(() => {
-    if (!agencySlug) {
-      return;
-    }
-
-    async function loadAgency() {
-      try {
-        const response = await fetch(`/api/agencies/${agencySlug}`);
-
-        if (!response.ok) {
-          throw new Error("Agency not found");
-        }
-
-        const agency = (await response.json()) as Agency;
-
-        setAgency(agency);
-        setStatus("success");
-      } catch {
-        setStatus("error");
-      }
-    }
-
-    loadAgency();
-  }, [agencySlug]);
-
-  if (!agencySlug) {
-    return <main>Enter an agency slug in the URL.</main>;
-  }
-
-  if (status === "loading") {
-    return <main>Loading agency...</main>;
-  }
-
-  if (status === "error") {
-    return <main>Agency not found.</main>;
-  }
-
-  return (
-    <>{agency ? <AgencyHomePage agency={agency} /> : null}</>
-  );
+  id: string
+  slug: string
+  name: string
 }
 
-export default App;
+// actual API request
+const fetchAgency = async (agencySlug: string): Promise<Agency> => {
+  const response = await fetch(`/api/agencies/${agencySlug}`)
+
+  if (!response.ok) {
+    throw new Error()
+  }
+
+  return response.json()
+}
+
+const useGetAgency = (agencySlug: string) => {
+  return useQuery({
+    queryKey: ['agency', agencySlug],
+    queryFn: () => fetchAgency(agencySlug),
+    enabled: !!agencySlug
+  })
+}
+
+function App() {
+  const agencySlug =
+    window.location.pathname.split('/').filter(Boolean)[0] ?? ''
+
+  const { data: agency, isPending, isError, error } = useGetAgency(agencySlug)
+
+  if (!agencySlug) {
+    return <main>Enter an agency slug in the URL.</main>
+  }
+
+  if (isPending) {
+    return <p>Loading...</p>
+  }
+
+  if (isError) {
+    return <p>Error: {error.message}</p>
+  }
+
+  return <AgencyHomePage agency={agency} />
+}
+
+export default App
