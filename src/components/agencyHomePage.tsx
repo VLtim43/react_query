@@ -1,12 +1,12 @@
 type Agency = {
-  id: string;
-  slug: string;
-  name: string;
-};
+  id: string
+  slug: string
+  name: string
+}
 
 type AgencyHomePageProps = {
-  agency: Agency;
-};
+  agency: Agency
+}
 
 export function AgencyHomePage({ agency }: AgencyHomePageProps) {
   return (
@@ -16,9 +16,11 @@ export function AgencyHomePage({ agency }: AgencyHomePageProps) {
           <p className="text-sm font-medium text-muted-foreground">
             Agency portal
           </p>
-          <h1 className="text-xl font-semibold tracking-tight">{agency.name}</h1>
+          <h1 className="text-xl font-semibold tracking-tight">
+            {agency.name}
+          </h1>
         </div>
       </header>
     </main>
-  );
+  )
 }

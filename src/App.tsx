@@ -1,4 +1,4 @@
-import { AgencyHomePage } from '@/components/agency-home-page'
+import { AgencyHomePage } from '@/components/agencyHomePage'
 import { useQuery } from '@tanstack/react-query'
 
 type Agency = {
